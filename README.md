@@ -25,6 +25,9 @@
 - [Очередь Заданий (tksva_p)](https://github.com/DSTsvetkovTRCONT/tksva_q)
 - [Инспектор (tksva_p)](https://github.com/DSTsvetkovTRCONT/tksva_p)
 
+#### Использованные технологии
+Python3.10, Flask, Gunicorn, Nginx
+
 #### Описание алгоритма
 На данном этапе развития проекта Веб-интерфейс ИРСВА обеспечивает доступ к двум видам выгрузок:
 - выгрузка из таблицы DWH ***audit._sales__execution_orders*** с отбором по начальной и конечной дате и станции отправления (формируется на основании параметров переданных через форму **DownloadForStationForm** Веб-интерфейса tksva).
