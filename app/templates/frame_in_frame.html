@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="ru">
+<head>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"-->
+    <!--link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet"-->
+    <!--script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script-->   
+    <!--link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"-->
+
+
+</head>
+  <body>
+    <meta http-equiv="refresh" content="3">
+    <div>
+        {% for current_user_post in current_user_posts %}
+        <ul>
+          {% if current_user_post["task_status"] == "файл подготовлен" %}
+          <li><a href="{{ current_user_post["download_info"] }}">{{ current_user_post["file_to_download"]}}</a><span style="color:orange"> - готов к загрузке</span></li>
+          {% elif current_user_post["task_status"] == "ошибка"%}
+          <li>{{ current_user_post["file_to_download"] }}<span style="color:red"> - ошибка</span ></li>
+          {% elif current_user_post["task_status"] == "файл загружен" %}
+          <li>{{ current_user_post["file_to_download"] }}<span style="color:green"> - файл загружен</span ></li>               
+          {% elif current_user_post["task_status"] == "в очереди" %}
+          <li>{{ current_user_post["file_to_download"] }}<span style="color:blue"> - в очереди</span></li>   
+          {% elif current_user_post["task_status"] ==  "задача завершена скачиванием файла" %}
+          <li>{{ current_user_post["file_to_download"] }}<span style="color:magenta"> - задача завершена скачиванием файла</span></li>  
+          {% elif current_user_post["task_status"] ==  "скрыта пользователем" %}
+          <!--li>{{ current_user_post["file_to_download"] }}<span style="color:magenta"> - задача завершена скачиванием файла</span></li-->  
+          {% else %}   
+          <li>{{ current_user_post["file_to_download"] }}<span style="color:yellowgreen"> - {{ current_user_post["task_status"] }}</span></li>                         
+          {% endif %}
+        </ul>
+        {% endfor %}
+    </div>
+  </body>
+</html>

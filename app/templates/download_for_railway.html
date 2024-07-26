@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block content %}
+<!--p>{{ debug_info }}</p-->
+<form action="" method="post">
+    {{ form.hidden_tag() }}
+    <div>
+        <p>{{ form.railway_name.label }}:</p>
+        <p>
+            <!--input name="railway_name" type="search" list="character" value="{{ current_user_last_post["conditions"]["railway_name"] }}" title="{{ form.railway_name_input_title }}"-->   
+            <input name="railway_name" type="search" list="character" title="{{ form.railway_name_input_title }}">   
+            <datalist id="character">
+            {% for railway in railways_list %}
+            <option value="{{ railway }}"></option>
+            {% endfor %}
+            </datalist>
+            {% for error in form.railway_name.errors %}
+            <span style="color: red;">{{ error }}</span>
+            {% endfor %}    
+        </p>
+    </div>
+
+    <div>
+        <p>{{ form.start_date.label }}:</p>
+        <p>{{ form.start_date }}
+        <!--p><input name="start_date" required="" type="date" value="{{ current_user_last_post["conditions"]["start_date"] }}">-->       
+        {% for error in form.start_date.errors %}
+        <span style="color: red;">{{ error }}</span>
+        {% endfor %}    
+        </p>
+    </div>
+    
+    <div>
+        <p>{{ form.finish_date.label }}:</p>
+        <p>{{ form.finish_date }}
+        <!--p><input name="start_date" required="" type="date" value="{{ current_user_last_post["conditions"]["finish_date"] }}">-->
+        {% for error in form.finish_date.errors %}
+        <span style="color: red;">{{ error }}</span>
+        {% endfor %}      
+        </p>
+    </div>
+
+    <div>
+        <p>{{ form.submit() }}</p>
+        <p>{% include "_flashes.html" %}</p>
+        <!--p>{{ (form_class_name) }}</p-->
+    </div>
+</form>
+<iframe src="/frame-in-page/DownloadForRailwayForm" allowfullscreen="true" height="{{ frame_in_page_height }}" width="760"></iframe>
+{% endblock %}

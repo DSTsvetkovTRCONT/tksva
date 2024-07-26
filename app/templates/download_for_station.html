@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+
+<form action="" method="post">
+    {{ form.hidden_tag() }}
+    <div>
+        <p>{{ form.station_name.label }}:</p>
+        <p>
+            <input name="station_name" type="search" list="character" title="{{ form.station_name_input_title }}"> 
+            <datalist id="character">
+            {% for station in stations_list %}
+            <option value="{{ station }}"></option>
+            {% endfor %}
+            </datalist>
+            {% for error in form.station_name.errors %}
+            <span style="color: red;">{{ error }}</span>
+            {% endfor %}    
+        </p>
+    </div>
+
+    <div>
+        <p>{{ form.start_date.label }}:</p>
+        <p>{{ form.start_date }}
+        {% for error in form.start_date.errors %}
+        <span style="color: red;">{{ error }}</span>
+        {% endfor %}    
+        </p>
+    </div>
+    
+    <div>
+        <p>{{ form.finish_date.label }}:</p>
+        <p>{{ form.finish_date }}
+        {% for error in form.finish_date.errors %}
+        <span style="color: red;">{{ error }}</span>
+        {% endfor %}      
+        </p>
+    </div>
+
+    <div>
+        <p>{{ form.submit() }}</p>
+        <p>{% include "_flashes.html" %}</p>        
+    </div>
+</form>
+<iframe src="/frame-in-page/DownloadForStationForm" allowfullscreen="true" height="{{ frame_in_page_height }}" width="760"></iframe>
+{% endblock %}

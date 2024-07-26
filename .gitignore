@@ -1,0 +1,8 @@
+__pycache__
+.venv
+.env
+app.db
+/logs
+test*
+*.csv
+static/files_to_download/
