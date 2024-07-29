@@ -74,6 +74,11 @@ source .venv/bin/activate
 ```bash
 pip install -r requirements.txt
 ```
+Создаём таблицы базы данных Postgresql:
+```bash
+flask db init
+flask db upgrade
+```
 Выключаем виртуальное окружение:
 ```bash
 deactivate
