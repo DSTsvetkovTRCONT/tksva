@@ -122,12 +122,12 @@ def download_for_railway():
 
     current_user_posts = list(current_user.get_posts(form_class_name))
 
-    if current_user_posts:
-        current_user_last_post = current_user_posts[0]
-    else:
-        current_user_last_post = {"conditions": {"railway_name": railways_list[1],
-                                                 "start_date": min_date_in_dwh_table,
-                                                 "finish_date": max_date_in_dwh_table}}
+    # if current_user_posts:
+    #     current_user_last_post = current_user_posts[0]
+    # else:
+    #     current_user_last_post = {"conditions": {"railway_name": railways_list[1],
+    #                                              "start_date": min_date_in_dwh_table,
+    #                                              "finish_date": max_date_in_dwh_table}}
 
     frame_in_page_height = len(current_user_posts)*60 + 190
 
@@ -135,7 +135,7 @@ def download_for_railway():
                            form=form,
                            railways_list=railways_list,
                            frame_in_page_height=frame_in_page_height,
-                           current_user_last_post=current_user_last_post,
+                           # current_user_last_post=current_user_last_post,
                            user_name=current_user,
                            debug_info=current_user)
 
@@ -191,12 +191,12 @@ def download_for_station():
 
     current_user_posts = list(current_user.get_posts(form_class_name))
 
-    if current_user_posts:
-        current_user_last_post = current_user_posts[0]
-    else:
-        current_user_last_post = {"conditions": {"station_name": stations_list[1],
-                                                 "start_date": min_date_in_dwh_table,
-                                                 "finish_date": max_date_in_dwh_table}}
+    # if current_user_posts:
+    #     current_user_last_post = current_user_posts[0]
+    # else:
+    #    current_user_last_post = {"conditions": {"station_name": stations_list[1],
+    #                                             "start_date": min_date_in_dwh_table,
+    #                                             "finish_date": max_date_in_dwh_table}}
 
     frame_in_page_height = len(current_user_posts)*60 + 190
 
@@ -204,7 +204,7 @@ def download_for_station():
                            form=form,
                            stations_list=stations_list,
                            frame_in_page_height=frame_in_page_height,
-                           current_user_last_post=current_user_last_post,
+                           # current_user_last_post=current_user_last_post,
                            user_name=current_user,
                            debug_info=(min_date_in_dwh_table))
 
