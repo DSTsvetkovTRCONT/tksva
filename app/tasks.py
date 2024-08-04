@@ -49,7 +49,7 @@ else:
 chunk_size = int(os.environ.get('CHUNK_SIZE'))
 
 
-def DownloadForStationForm(post_id):
+def download_for_station(post_id):
     set_gives_information_status('audit._sales__execution_orders', True)
     # logger.info('*'*50)
     logger.info(f'Запущено: DownloadForStationForm для post: {post_id}')
@@ -149,6 +149,7 @@ def DownloadForStationForm(post_id):
                 values_list = [value[1:] for value in values_list]
         except Exception:
             logger.exception("Данные из DWH не получены")
+            set_task_status(post_id, "Ошибка DWH")
             return False
 
         try:
@@ -192,7 +193,7 @@ def download_for_railway(post_id):
     if 'загружено' in post_dict['task_status']:
         start_upset = int(post_dict['task_status'].split(' ')[1]) + chunk_size
         rows_qty = int(post_dict['task_status'].split(' ')[3])
-        logger.info(f'Возовбновляем после перезапуска (start_upset: {start_upset})')
+        logger.info(f'Возобновляем после перезапуска (start_upset: {start_upset})')
     else:
         logger.info('Первый запуск')
         logger.info(f"file_name: {post_dict['file_to_download']}")
@@ -286,6 +287,7 @@ def download_for_railway(post_id):
             logger.info("Данные из DWH получены")
         except Exception:
             logger.exception("Данные из DWH не получены")
+            set_task_status(post_id, "Ошибка DWH")
             return False
 
         try:
@@ -315,6 +317,9 @@ def download_for_railway(post_id):
     logger.info("файл подготовлен")
     return True
 
+def aaa():
+    print('aaa')
+
 
 if __name__ == '__main__':
-    print(basedir)
+    aaa()

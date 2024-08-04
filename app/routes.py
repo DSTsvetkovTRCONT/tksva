@@ -183,6 +183,7 @@ def download_for_station():
 
         db.session.add(p)
         db.session.commit()
+        queue.enqueue('app.tasks.download_for_station', p.id)
 
         flash(f'станция: {form.station_name.data}, '
               f'начальная дата: {form.start_date.data}, '

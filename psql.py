@@ -215,5 +215,31 @@ def set_task_status(post_id, task_status):
     return True
 
 
+def set_gives_information_status(dwh_table_name, status):
+    #logger.info(f"Запущено: set_dwh_tables_info_status. "
+    #            f"Прописываем для {dwh_table_name} статус {status}")
+
+    #try:
+        psql_connection = psycopg2.connect(host=os.environ.get('PSQL_HOST'),
+                                           port=os.environ.get('PSQL_PORT'),
+                                           database=os.environ.get('PSQL_DBNAME'),
+                                           user=os.environ.get('PSQL_USER'),
+                                           password=os.environ.get('PSQL_PWD'))
+        with psql_connection:
+            cur = psql_connection.cursor()
+            cur.execute(f"""UPDATE
+                            dwh_tables_info
+                        SET
+                            gives_information = {status},
+                            gives_information_timestamp = now()
+                        WHERE
+                            dwh_table_name = '{dwh_table_name}'""")
+
+        return True
+    #except Exception:
+    #    logger.exception("Не удалось прописать статус")
+    #    return False
+
+
 if __name__ == '__main__':
     print(get_dwh_table_info())
