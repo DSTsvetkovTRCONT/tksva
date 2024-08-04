@@ -13,6 +13,9 @@ from colorama import Fore
 from datetime import datetime, timezone
 # from app.email import send_password_reset_email
 from psql import clear_if_complited, get_queued_posts_qty
+from redis import Redis
+import rq
+
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -20,6 +23,8 @@ if os.path.exists('.env'):
     load_dotenv(os.path.join(basedir, '.env'))
 else:
     load_dotenv(os.path.join(basedir, '.envexample'))
+
+queue = rq.Queue('tksva', connection=Redis.from_url('redis://'))
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -98,6 +103,8 @@ def download_for_railway():
                   f'конечная дата: {form.finish_date.data} - файл для этой задачи уже подготовлен') 
             return redirect(url_for('download_for_railway'))
 
+        
+
         p = Post(conditions=conditions,
                  form_name=form_class_name,
                  user_id=current_user.id,
@@ -105,6 +112,8 @@ def download_for_railway():
                  file_to_download=file_to_download)
         db.session.add(p)
         db.session.commit()
+        queue.enqueue('app.tasks.download_for_railway', p.id)
+
 
         flash(f'дорога: {form.railway_name.data}, '
               f'начальная дата: {form.start_date.data}, '
@@ -115,10 +124,7 @@ def download_for_railway():
 
     dwh_table_info_dict = get_dwh_table_info()
     railways_list = dwh_table_info_dict['railway_names'].split('|')
-    min_date_in_dwh_table = datetime.strptime(dwh_table_info_dict['min_date'],
-                                              "%Y-%m-%d %H:%M:%S").date()
-    max_date_in_dwh_table = datetime.strptime(dwh_table_info_dict['max_date'],
-                                              "%Y-%m-%d %H:%M:%S").date()
+
 
     current_user_posts = list(current_user.get_posts(form_class_name))
 

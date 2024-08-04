@@ -137,6 +137,83 @@ def clear_if_complited(user_id, form_name):
         cur = psql_connection.cursor()
         cur.execute(sql)     
    
-   
+def get_post(post_id):
+    #logger.info('Запущено: get_post. Получаем информацию о посте')
+
+    #try:
+        psql_connection = psycopg2.connect(host=os.environ.get('PSQL_HOST'),
+                                           port=os.environ.get('PSQL_PORT'),
+                                           database=os.environ.get('PSQL_DBNAME'),
+                                           user=os.environ.get('PSQL_USER'),
+                                           password=os.environ.get('PSQL_PWD'))
+
+        sql = f"""SELECT * FROM post WHERE id={post_id}"""
+        with psql_connection:
+            cur = psql_connection.cursor()
+            cur.execute(sql)
+            post_list = cur.fetchone()
+
+        return {'user_id': post_list[1],
+                'conditions': post_list[3],
+                'task_status': post_list[4],
+                'file_to_download': post_list[5]}
+    #except Exception:
+    #    logger.exception("Не удалось получить информацию о посте")
+
+def get_gives_information_status(dwh_table_name):
+    #logger.info(f"Запущено: get_gives_information_status. "
+    #            f"Получаем статусы для {dwh_table_name}")
+
+    try:
+        psql_connection = psycopg2.connect(host=os.environ.get('PSQL_HOST'),
+                                           port=os.environ.get('PSQL_PORT'),
+                                           database=os.environ.get('PSQL_DBNAME'),
+                                           user=os.environ.get('PSQL_USER'),
+                                           password=os.environ.get('PSQL_PWD'))
+
+        with psql_connection:
+            cur = psql_connection.cursor()
+            cur.execute(f"""SELECT
+                                wants_to_refresh,
+                                gives_information
+                        FROM
+                            dwh_tables_info
+                        WHERE
+                            dwh_table_name = '{dwh_table_name}'""")
+            res_list = cur.fetchone()
+        res_dict = {'wants_to_refresh': res_list[0],
+                    'gives_information': res_list[1]}
+        return res_dict
+    except Exception:
+        #logger.exception("Не удалось получить статусы")
+        return False
+
+
+def set_task_status(post_id, task_status):
+    #logger.info(f"Запущено: set_task_status. "
+    #            f"Прописываем статус для {post_id} - {task_status}")
+
+    try:
+        psql_connection = psycopg2.connect(host=os.environ.get('PSQL_HOST'),
+                                           port=os.environ.get('PSQL_PORT'),
+                                           database=os.environ.get('PSQL_DBNAME'),
+                                           user=os.environ.get('PSQL_USER'),
+                                           password=os.environ.get('PSQL_PWD'))
+
+        with psql_connection:
+            cur = psql_connection.cursor()
+            cur.execute(f"""UPDATE
+                                post
+                        SET
+                            task_status ='{task_status}',
+                            task_status_timestamp = now()
+                        WHERE
+                            id = {post_id}""")
+    except Exception:
+        #logger.exception("Не удалось прописать статус")
+        return False
+    return True
+
+
 if __name__ == '__main__':
     print(get_dwh_table_info())
